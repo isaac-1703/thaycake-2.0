@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thay Cake</title>
+  <meta name="description" content="Os mais deliciosos bolos de pote artesanais. Sabor caseiro feito com amor. Peça pelo WhatsApp!">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --tc-bg: #FCF9F7;
+      --tc-text: #2D1B14;
+      --tc-text-secondary: #5C3A30;
+      --tc-text-muted: #5C3A30;
+      --tc-primary: #BD6B62;
+      --tc-primary-hover: #A85A52;
+      --tc-border: #E5D5D0;
+      --tc-surface: #ffffff;
+      --tc-surface-50: rgba(255,255,255,0.5);
+      --tc-accent-rose: #F8EDEB;
+      --tc-accent-rose-light: #F3DFDC;
+      --tc-star: #E8A84C;
+      --tc-glass-bg: rgba(255,255,255,0.7);
+      --tc-glass-border: rgba(255,255,255,0.3);
+      --tc-toast-success: #4A8C5C;
+      --tc-toast-error: #C84B4B;
+      --tc-hero-from: #FCF9F7;
+      --tc-hero-mid: #F8EDEB;
+      --tc-hero-to: #F3DFDC;
+      --tc-card-shadow: rgba(45,27,20,0.15);
+      --t: 45,27,20;
+      --t2: 92,58,48;
+      --p: 189,107,98;
+      --ph: 168,90,82;
+      --d4: 212,166,158;
+      --b: 229,213,208;
+      --r: #F8EDEB;
+      --r2: #F3DFDC;
+      --via: 232,196,190;
+    }
+
+    html.dark {
+      --tc-bg: #1A1412;
+      --tc-text: #F0E8E4;
+      --tc-text-secondary: #C4B5AD;
+      --tc-text-muted: #9C8A80;
+      --tc-primary: #D48A82;
+      --tc-primary-hover: #E09E96;
+      --tc-border: #3D2E28;
+      --tc-surface: #26211E;
+      --tc-surface-50: rgba(38,33,30,0.5);
+      --tc-accent-rose: #2D1F1B;
+      --tc-accent-rose-light: #3D2A24;
+      --tc-star: #D4A84C;
+      --tc-glass-bg: rgba(26,20,18,0.85);
+      --tc-glass-border: rgba(255,255,255,0.06);
+      --tc-toast-success: #3D7A4E;
+      --tc-toast-error: #A83030;
+      --tc-hero-from: #1A1412;
+      --tc-hero-mid: #231B17;
+      --tc-hero-to: #2D1F1B;
+      --tc-card-shadow: rgba(0,0,0,0.4);
+      --t: 240,232,228;
+      --t2: 196,181,173;
+      --p: 212,138,130;
+      --ph: 224,158,150;
+      --d4: 180,140,130;
+      --b: 61,46,40;
+      --r: #2D1F1B;
+      --r2: #3D2A24;
+      --via: 180,140,130;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--tc-bg);
+      color: var(--tc-text);
+      transition: background 0.3s, color 0.3s;
+    }
+    .t-t { color: rgb(var(--t)); }
+    .t-t2 { color: rgb(var(--t2)); }
+    .t-p { color: rgb(var(--p)); }
+    .t-d4 { color: rgb(var(--d4)); }
+    .t-ph { color: rgb(var(--ph)); }
+    .bg-p { background: rgb(var(--p)); }
+    .bg-t { background: rgb(var(--t)); }
+    .bg-surface { background: var(--tc-surface); }
+    .bg-surface-50 { background: var(--tc-surface-50); }
+    .bg-r { background: var(--r); }
+    .bg-r2 { background: var(--r2); }
+    .b-b { border-color: rgb(var(--b)); }
+    .b-t2 { border-color: rgb(var(--t2)); }
+    .t-t2-80 { color: rgba(var(--t2),.8); }
+    .t-t2-70 { color: rgba(var(--t2),.7); }
+    .t-t2-60 { color: rgba(var(--t2),.6); }
+    .t-t2-50 { color: rgba(var(--t2),.5); }
+    .t-t2-40 { color: rgba(var(--t2),.4); }
+    .t-d4-70 { color: rgba(var(--d4),.7); }
+    .t-d4-50 { color: rgba(var(--d4),.5); }
+    .bg-p-10 { background: rgba(var(--p),.1); }
+    .bg-footer { background: rgb(45,27,20); }
+    .b-b-50 { border-color: rgba(var(--b),.5); }
+    .b-t2-40 { border-color: rgba(var(--t2),.4); }
+    .dm-toggle {
+      background: none;
+      border: 1.5px solid rgb(var(--b));
+      border-radius: 9999px;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: rgb(var(--t2));
+      transition: all 0.3s;
+    }
+    .dm-toggle:hover {
+      border-color: rgb(var(--p));
+      color: rgb(var(--p));
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+    }
+    .hero-bg {
+      background: linear-gradient(135deg, var(--tc-hero-from) 0%, var(--tc-hero-mid) 50%, var(--tc-hero-to) 100%);
+    }
+    .hero-pattern {
+      background-image: radial-gradient(circle at 25% 75%, rgba(189, 107, 98, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 75% 25%, rgba(189, 107, 98, 0.06) 0%, transparent 50%);
+    }
+    .glass {
+      background: var(--tc-glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--tc-glass-border);
+    }
+    .product-card {
+      background: var(--tc-surface);
+      border: 1px solid var(--tc-border);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -12px var(--tc-card-shadow);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--tc-primary);
+      color: #fff;
+      padding: 0.75rem 1.75rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-primary:hover {
+      background: var(--tc-primary-hover);
+      transform: scale(0.97);
+    }
+    .btn-primary:active {
+      transform: scale(0.95);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1.5px solid var(--tc-primary);
+      color: var(--tc-primary);
+      padding: 0.75rem 1.75rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-outline:hover {
+      background: var(--tc-primary);
+      color: #fff;
+      transform: scale(0.97);
+    }
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .star-btn {
+      transition: all 0.2s ease;
+    }
+    .star-btn:hover {
+      transform: scale(1.2);
+    }
+    .star-btn.active svg {
+      fill: var(--tc-star);
+      color: var(--tc-star);
+    }
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--tc-border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      background: var(--tc-surface);
+      color: var(--tc-text);
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+    .input-field:focus {
+      border-color: var(--tc-primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--tc-primary) 15%, transparent);
+    }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 100;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 500;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast.success { background: var(--tc-toast-success); }
+    .toast.error { background: var(--tc-toast-error); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-up { opacity: 1; transform: none; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .float-anim {
+      animation: float 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass" role="navigation" aria-label="Navegação principal">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 no-underline">
+        <img src="/logo.jpg" alt="Thay Cake" class="w-8 h-8 rounded-full object-cover">
+        <span class="font-['Playfair_Display'] text-xl font-semibold t-t">Thay Cake</span>
+      </a>
+      <div class="flex items-center gap-4 sm:gap-6">
+        <a href="/sabores" class="text-sm font-medium t-t2 hover:t-p transition-colors no-underline">Sabores</a>
+        <a href="/feedbacks" class="text-sm font-medium t-t2 hover:t-p transition-colors no-underline">Feedbacks</a>
+        <button id="dm-toggle" class="dm-toggle" aria-label="Alternar modo escuro">
+          <svg class="dm-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="dm-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="https://wa.me/5589988194690" target="_blank" rel="noopener noreferrer" class="btn-primary text-sm !py-2 !px-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Contato
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero-bg hero-pattern min-h-[100dvh] flex items-center pt-20" aria-label="Início">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div class="fade-up visible py-8 lg:py-16">
+          <span class="inline-block px-3 py-1 text-[11px] uppercase tracking-[0.18em] font-medium t-p bg-p-10 rounded-full mb-5">Novidade</span>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold t-t leading-[1.1] tracking-tight">
+            Sabor inesquecível &<br>
+            <span class="t-p">amor no pote</span>
+          </h1>
+          <p class="mt-5 text-lg t-t2-80 max-w-lg leading-relaxed">
+            Bolos de pote artesanais feitos com ingredientes selecionados e muito carinho. 
+            O doce perfeito para qualquer momento do seu dia.
+          </p>
+          <div class="flex flex-wrap gap-3 mt-8">
+            <a href="/sabores" class="btn-primary">
+              Ver Sabores
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative flex items-center justify-center lg:justify-end py-8">
+          <div class="relative">
+            <div class="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-2xl float-anim">
+              <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(to bottom right,rgb(var(--r2)),rgb(var(--via)),rgb(var(--d4)))">
+                <span class="text-8xl sm:text-9xl">🧁</span>
+              </div>
+            </div>
+            <div class="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass rounded-2xl px-4 py-3 shadow-lg">
+              <p class="text-sm font-semibold t-t">+200 <span class="font-normal t-t2-70">pedidos</span></p>
+            </div>
+            <div class="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 glass rounded-2xl px-4 py-3 shadow-lg">
+              <p class="text-sm font-semibold t-p">★ 4.9</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <section class="border-y border-b/60 bg-surface-50" aria-label="Diferenciais">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl"></span>
+          <div>
+            <p class="text-sm font-semibold t-t">Ingredientes Selecionados</p>
+            <p class="text-xs t-t2-60">Qualidade em cada detalhe</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl"></span>
+          <div>
+            <p class="text-sm font-semibold t-t">Feito Artesanalmente</p>
+            <p class="text-xs t-t2-60">Receita caseira especial</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl"></span>
+          <div>
+            <p class="text-sm font-semibold t-t">Entrega na sua casa</p>
+            <p class="text-xs t-t2-60">Consulte regiões</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl"></span>
+          <div>
+            <p class="text-sm font-semibold t-t">Amor em cada pote</p>
+            <p class="text-xs t-t2-60">Feito com carinho</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products / Vitrine -->
+  <section id="vitrine" class="py-20 sm:py-28" aria-label="Nossos sabores">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 fade-up" data-delay="0">
+        <span class="inline-block px-3 py-1 text-[11px] uppercase tracking-[0.18em] font-medium t-p bg-p-10 rounded-full mb-4">Nossa Vitrine Doce</span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold t-t leading-tight">Escolha seu sabor favorito</h2>
+        <p class="mt-3 t-t2-70 max-w-lg mx-auto">Todos os nossos bolos são feitos sob encomenda com ingredientes frescos.</p>
+      </div>
+
+      <div id="products-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Lista de produtos">
+        <!-- Products loaded via API -->
+      </div>
+
+      <div class="text-center mt-12 fade-up" data-delay="200">
+        <a href="https://wa.me/5589988194690?text=Ol%C3%A1!%20Quero%20fazer%20um%20pedido%20de%20bolos%20de%20pote%20%F0%9F%A7%81" target="_blank" rel="noopener noreferrer" class="btn-primary text-base !py-3 !px-8">
+          Fazer Pedido personalizado
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="feedbacks" class="py-20 sm:py-28 bg-r" aria-label="Feedbacks">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 fade-up" data-delay="0">
+        <span class="inline-block px-3 py-1 text-[11px] uppercase tracking-[0.18em] font-medium t-p bg-p-10 rounded-full mb-4">Clientes Felizes</span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold t-t leading-tight">O que dizem sobre nós</h2>
+        <p class="mt-3 t-t2-70 max-w-lg mx-auto">A opinião de quem já experimentou é o nosso melhor cartão de visitas.</p>
+      </div>
+
+      <div id="testimonials-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Feedbacks de clientes">
+        <!-- Testimonials loaded via API -->
+      </div>
+
+      <div class="text-center mt-12 fade-up" data-delay="200">
+        <button onclick="document.getElementById('feedback-section').scrollIntoView({behavior:'smooth'})" class="btn-outline">
+          Deixar Avaliação
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5"/><path d="M7 6l5 5 5-5"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feedback Form -->
+  <section id="feedback-section" class="py-20 sm:py-28" aria-label="Deixe sua avaliação">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 fade-up" data-delay="0">
+        <span class="inline-block px-3 py-1 text-[11px] uppercase tracking-[0.18em] font-medium t-p bg-p-10 rounded-full mb-4">Sua Opinião</span>
+        <h2 class="text-3xl sm:text-4xl font-bold t-t leading-tight">Compartilhe sua experiência</h2>
+        <p class="mt-3 t-t2-70 max-w-md mx-auto">Sua avaliação nos ajuda a melhorar e a levar mais doçura para todos!</p>
+      </div>
+
+      <div class="glass rounded-3xl p-8 sm:p-10 fade-up" data-delay="100">
+        <form id="feedback-form" novalidate>
+          <div class="space-y-5">
+            <div>
+              <label for="name" class="block text-sm font-medium t-t mb-1.5">Seu Nome</label>
+              <input type="text" id="name" name="name" class="input-field" placeholder="Como você gostaria de ser chamado?" required minlength="2" maxlength="60">
+              <p class="text-xs t-t2-50 mt-1">Opcional — aparecerá junto com seu depoimento</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium t-t mb-1.5">Sua Nota</label>
+              <div class="flex gap-1" id="star-rating" role="radiogroup" aria-label="Selecione uma nota">
+                <button type="button" class="star-btn p-1" data-value="1" aria-label="1 estrela" role="radio" aria-checked="false">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4A69E" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </button>
+                <button type="button" class="star-btn p-1" data-value="2" aria-label="2 estrelas" role="radio" aria-checked="false">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4A69E" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </button>
+                <button type="button" class="star-btn p-1" data-value="3" aria-label="3 estrelas" role="radio" aria-checked="false">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4A69E" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </button>
+                <button type="button" class="star-btn p-1" data-value="4" aria-label="4 estrelas" role="radio" aria-checked="false">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4A69E" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </button>
+                <button type="button" class="star-btn p-1" data-value="5" aria-label="5 estrelas" role="radio" aria-checked="false">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4A69E" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </button>
+              </div>
+              <input type="hidden" id="rating" name="rating" value="0">
+            </div>
+
+            <div>
+              <label for="comment" class="block text-sm font-medium t-t mb-1.5">Seu Comentário</label>
+              <textarea id="comment" name="comment" rows="4" class="input-field resize-none" placeholder="Conte pra gente o que você achou dos nossos bolos..." required minlength="3" maxlength="500"></textarea>
+              <p class="text-xs t-t2-50 mt-1" id="char-count">0 / 500 caracteres</p>
+            </div>
+
+            <button type="submit" class="btn-primary w-full justify-center text-base !py-3.5" id="submit-btn">
+              Enviar Avaliação
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-footer text-white py-16" role="contentinfo">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <img src="/logo.jpg" alt="Thay Cake" class="w-8 h-8 rounded-full object-cover">
+            <h3 class="font-['Playfair_Display'] text-xl font-semibold">Thay Cake</h3>
+          </div>
+          <p class="t-d4-70 text-sm leading-relaxed max-w-xs">
+            Bolos de pote artesanais feitos com ingredientes selecionados e muito amor. 
+            O sabor caseiro que alegra o seu dia.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-['Playfair_Display'] text-lg font-semibold mb-4">Contato</h4>
+          <ul class="space-y-3 text-sm t-d4-70">
+            <li class="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              <a href="tel:5589988194690" class="hover:text-white transition-colors">(89) 98819-4690</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Picos, PI — Brasil</span>
+            </li>
+            <li>
+              <a href="https://wa.me/5589988194690" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 t-p hover:t-d4 transition-colors font-medium">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Fale pelo WhatsApp
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-['Playfair_Display'] text-lg font-semibold mb-4">Links</h4>
+          <ul class="space-y-3 text-sm t-d4-70">
+            <li><a href="/sabores" class="hover:text-white transition-colors">Sabores</a></li>
+            <li><a href="/feedbacks" class="hover:text-white transition-colors">Feedbacks</a></li>
+            <li><a href="/avaliar" class="hover:text-white transition-colors">Deixar Avaliação</a></li>
+            <li><a href="https://wa.me/5589988194690" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Pedir Agora</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t b-t2-40 mt-10 pt-8 text-center text-sm t-d4-50">
+        <p>&copy; 2026 Thay Cake. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-up
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Star rating
+    const stars = document.querySelectorAll('.star-btn');
+    const ratingInput = document.getElementById('rating');
+
+    stars.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = parseInt(btn.dataset.value);
+        ratingInput.value = value;
+        stars.forEach((s, i) => {
+          const isActive = i < value;
+          s.classList.toggle('active', isActive);
+          s.querySelector('svg').setAttribute('fill', isActive ? '#E8A84C' : 'none');
+          s.querySelector('svg').setAttribute('stroke', isActive ? '#E8A84C' : '#D4A69E');
+          s.setAttribute('aria-checked', i === value - 1 ? 'true' : 'false');
+        });
+      });
+    });
+
+    // Comment char count
+    const comment = document.getElementById('comment');
+    const charCount = document.getElementById('char-count');
+    comment.addEventListener('input', () => {
+      charCount.textContent = `${comment.value.length} / 500 caracteres`;
+    });
+
+    // Toast
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // Form submit
+    const form = document.getElementById('feedback-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim() || 'Anônimo';
+      const rating = parseInt(ratingInput.value);
+      const comment = document.getElementById('comment').value.trim();
+
+      if (!rating) {
+        showToast('Por favor, selecione uma nota.', 'error');
+        return;
+      }
+      if (!comment) {
+        showToast('Por favor, escreva seu comentário.', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.innerHTML = 'Enviando...';
+
+      try {
+        const res = await fetch('/api/testimonials', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, rating, comment })
+        });
+
+        if (!res.ok) throw new Error('Erro ao enviar');
+
+        showToast('Avaliação enviada com sucesso! Obrigado!');
+        form.reset();
+        ratingInput.value = '0';
+        stars.forEach(s => {
+          s.classList.remove('active');
+          s.querySelector('svg').setAttribute('fill', 'none');
+          s.querySelector('svg').setAttribute('stroke', '#D4A69E');
+          s.setAttribute('aria-checked', 'false');
+        });
+        charCount.textContent = '0 / 500 caracteres';
+        loadTestimonials();
+      } catch (err) {
+        showToast('Erro ao enviar avaliação. Tente novamente.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Enviar Avaliação <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>';
+      }
+    });
+
+    // Load products
+    async function loadProducts() {
+      try {
+        const res = await fetch('/api/products');
+        const products = await res.json();
+        const grid = document.getElementById('products-grid');
+
+        if (!products.length) {
+          grid.innerHTML = `
+            <div class="col-span-full text-center py-12 fade-up visible">
+              <span class="text-4xl block mb-3">🧁</span>
+              <p class="text-lg font-semibold t-t">Em breve novos sabores!</p>
+              <p class="text-sm t-t2-60 mt-1">Estamos preparando novidades deliciosas.</p>
+            </div>`;
+          return;
+        }
+
+        grid.innerHTML = products.map(p => `
+          <div class="product-card bg-surface rounded-3xl overflow-hidden border b-b-50 fade-up" role="listitem">
+            <div class="h-48 flex items-center justify-center overflow-hidden ${p.image ? '' : 'bg-gradient-to-br from-[' + p.color1 + '] to-[' + p.color2 + ']'}">
+              ${p.image ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">` : `<span class="text-6xl">${p.emoji}</span>`}
+            </div>
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="text-xl font-bold t-t">${p.name}</h3>
+                <span class="text-lg font-bold t-p">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+              </div>
+              <p class="text-sm t-t2-70 leading-relaxed" style="overflow-wrap:break-word;word-break:break-word">${p.description}</p>
+              <div class="text-center mt-4">
+                <a href="${p.whatsapp_link}" target="_blank" rel="noopener noreferrer" class="btn-outline text-sm !py-2 !px-5">
+                  Comprar agora
+                </a>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Re-observe new elements
+        document.querySelectorAll('#products-grid .fade-up').forEach(el => observer.observe(el));
+        // Trigger visibility for products already in view after 50ms
+        setTimeout(() => {
+          document.querySelectorAll('#products-grid .fade-up').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) el.classList.add('visible');
+          });
+        }, 100);
+      } catch (err) {
+        document.getElementById('products-grid').innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <p class="t-t2-60">Não foi possível carregar os sabores. Tente novamente mais tarde.</p>
+          </div>`;
+      }
+    }
+
+    // Load testimonials
+    async function loadTestimonials() {
+      try {
+        const res = await fetch('/api/testimonials');
+        const testimonials = await res.json();
+        const grid = document.getElementById('testimonials-grid');
+
+        if (!testimonials.length) {
+          grid.innerHTML = `
+            <div class="col-span-full text-center py-12 fade-up visible">
+              <span class="text-4xl block mb-3">💬</span>
+              <p class="text-lg font-semibold t-t">Seja o primeiro a avaliar!</p>
+              <p class="text-sm t-t2-60 mt-1">Sua opinião é muito importante para nós.</p>
+            </div>`;
+          return;
+        }
+
+        grid.innerHTML = testimonials.map(t => `
+          <div class="bg-surface rounded-3xl p-6 border b-b-50 fade-up" role="listitem">
+            <div class="flex items-center gap-1 mb-3">
+              ${'<svg width="16" height="16" viewBox="0 0 24 24" fill="#E8A84C" stroke="#E8A84C" stroke-width="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'.repeat(t.rating)}
+            </div>
+            <p class="text-sm t-t leading-relaxed mb-4">"${t.comment}"</p>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-r2 flex items-center justify-center text-sm font-medium t-p">
+                ${t.name.charAt(0).toUpperCase()}
+              </div>
+              <span class="text-sm font-medium t-t2">${t.name}</span>
+              <span class="text-xs t-t2-40">${new Date(t.date).toLocaleDateString('pt-BR')}</span>
+            </div>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('#testimonials-grid .fade-up').forEach(el => observer.observe(el));
+        setTimeout(() => {
+          document.querySelectorAll('#testimonials-grid .fade-up').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) el.classList.add('visible');
+          });
+        }, 100);
+      } catch (err) {
+        document.getElementById('testimonials-grid').innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <p class="t-t2-60">Não foi possível carregar os feedbacks.</p>
+          </div>`;
+      }
+    }
+
+    loadProducts();
+    loadTestimonials();
+
+    // Dark mode
+    (function() {
+      const html = document.documentElement;
+      const toggle = document.getElementById('dm-toggle');
+      const sun = toggle.querySelector('.dm-sun');
+      const moon = toggle.querySelector('.dm-moon');
+      function setTheme(dark) {
+        html.classList.toggle('dark', dark);
+        sun.style.display = dark ? 'none' : '';
+        moon.style.display = dark ? '' : 'none';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      }
+      const stored = localStorage.getItem('theme');
+      if (stored) {
+        setTheme(stored === 'dark');
+      } else {
+        setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      }
+      toggle.addEventListener('click', function() {
+        setTheme(!html.classList.contains('dark'));
+      });
+    })();
+
+    // Route-based scrolling
+    (function() {
+      var routeMap = {
+        '/sabores': 'vitrine',
+        '/feedbacks': 'feedbacks',
+        '/avaliar': 'feedback-section'
+      };
+      function scrollToSection(id) {
+        var el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      // On load, scroll if route matches
+      var target = routeMap[window.location.pathname];
+      if (target) setTimeout(function() { scrollToSection(target); }, 100);
+      // Intercept nav clicks for pushState
+      document.addEventListener('click', function(e) {
+        var a = e.target.closest('a[href]');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        var sectionId = routeMap[href];
+        if (sectionId) {
+          e.preventDefault();
+          history.pushState(null, '', href);
+          scrollToSection(sectionId);
+        }
+      });
+      // Handle popstate (back/forward)
+      window.addEventListener('popstate', function() {
+        var t = routeMap[window.location.pathname];
+        if (t) scrollToSection(t);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Thay Cake</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --a-bg: #F9F7F5;
+      --a-text: #1C1917;
+      --a-muted: #78716C;
+      --a-label: #5C3A30;
+      --a-primary: #BD6B62;
+      --a-primary-hover: #A85A52;
+      --a-border: #E5DDD7;
+      --a-surface: #ffffff;
+      --a-surface-rgb: 255,255,255;
+      --a-rose: #F3EDEA;
+      --a-tab-inactive: #78716C;
+      --a-d4: 212,166,158;
+      --a-danger: #DC2626;
+      --a-danger-hover: #B91C1C;
+      --a-toast-success: #4A8C5C;
+      --a-toast-error: #DC2626;
+      --a-modal-overlay: rgba(0,0,0,0.4);
+      --a-shadow: rgba(0,0,0,0.06);
+    }
+    html.dark {
+      --a-bg: #1A1412;
+      --a-text: #F0E8E4;
+      --a-muted: #9C8A80;
+      --a-label: #C4B5AD;
+      --a-primary: #D48A82;
+      --a-primary-hover: #E09E96;
+      --a-border: #3D2E28;
+      --a-surface: #26211E;
+      --a-surface-rgb: 38,33,30;
+      --a-rose: #2D1F1B;
+      --a-tab-inactive: #9C8A80;
+      --a-d4: 180,140,130;
+      --a-danger: #EF4444;
+      --a-danger-hover: #DC2626;
+      --a-toast-success: #3D7A4E;
+      --a-toast-error: #DC2626;
+      --a-modal-overlay: rgba(0,0,0,0.6);
+      --a-shadow: rgba(0,0,0,0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--a-bg);
+      color: var(--a-text);
+      transition: background 0.3s, color 0.3s;
+    }
+    .card {
+      background: var(--a-surface);
+      border: 1px solid var(--a-border);
+      border-radius: 16px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+      padding: 0.5rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--a-primary); color: #fff; }
+    .btn-primary:hover { background: var(--a-primary-hover); }
+    .btn-outline { border: 1.5px solid var(--a-primary); color: var(--a-primary); background: transparent; }
+    .btn-outline:hover { background: var(--a-primary); color: #fff; }
+    .btn-danger { background: var(--a-danger); color: #fff; }
+    .btn-danger:hover { background: var(--a-danger-hover); }
+    .btn-ghost { background: transparent; color: var(--a-label); }
+    .btn-ghost:hover { background: var(--a-rose); }
+    .btn-sm { padding: 0.375rem 0.875rem; font-size: 0.8125rem; }
+    .input-field {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 1.5px solid var(--a-border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      background: var(--a-surface);
+      color: var(--a-text);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .input-field:focus { border-color: var(--a-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--a-primary) 12%, transparent); }
+    .tab-btn {
+      padding: 0.625rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+      color: var(--a-tab-inactive);
+    }
+    .tab-btn.active { background: var(--a-surface); color: var(--a-text); box-shadow: 0 1px 3px var(--a-shadow); }
+    .tab-btn:hover:not(.active) { background: var(--a-rose); }
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      padding: 0.875rem 1.5rem;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--a-toast-success); }
+    .toast.error { background: var(--a-toast-error); }
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 50;
+      background: var(--a-modal-overlay);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: var(--a-surface); border-radius: 20px;
+      width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+      padding: 1.75rem;
+      transform: scale(0.95); transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-overlay.open .modal-box { transform: scale(1); }
+    .login-card {
+      background: var(--a-surface);
+      border: 1px solid var(--a-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .modal-box { transform: none; }
+    }
+    .a-text { color: var(--a-text); }
+    .a-muted { color: var(--a-muted); }
+    .a-label { color: var(--a-label); }
+    .a-primary { color: var(--a-primary); }
+    .a-d4 { color: rgb(var(--a-d4)); }
+    .a-rose { background: var(--a-rose); }
+    .a-bg { background: var(--a-bg); }
+    .a-border { border-color: var(--a-border); }
+    .a-surface { background: var(--a-surface); }
+    .a-muted-60 { color: color-mix(in srgb, var(--a-muted) 60%, transparent); }
+    .hover\:a-text:hover { color: var(--a-text); }
+    .hover\:a-bg:hover { background: var(--a-bg); }
+    .hover\:a-primary:hover { color: var(--a-primary); }
+    .hover\:b-p:hover { border-color: var(--a-primary); }
+    .dm-toggle {
+      background: none;
+      border: 1.5px solid var(--a-border);
+      border-radius: 9999px;
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--a-muted);
+      transition: all 0.3s;
+    }
+    .dm-toggle:hover {
+      border-color: var(--a-primary);
+      color: var(--a-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- Login Screen -->
+  <div id="login-screen" class="min-h-[100dvh] flex items-center justify-center px-4 a-rose">
+    <div class="login-card">
+      <div class="text-center mb-7">
+        <img src="/logo.jpg" alt="Thay Cake" class="w-12 h-12 rounded-full mx-auto mb-2 object-cover">
+        <h1 class="text-xl font-bold a-text">Thay Cake</h1>
+        <p class="text-sm a-muted mt-1">Painel Administrativo</p>
+      </div>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label for="password" class="block text-sm font-medium a-label mb-1">Senha</label>
+          <input type="password" id="password" class="input-field" placeholder="Digite a senha" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary w-full !py-2.5 text-base font-semibold">
+          Entrar
+        </button>
+        <p id="login-error" class="text-sm text-red-600 text-center hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="hidden min-h-[100dvh]">
+    <!-- Top bar -->
+    <header class="sticky top-0 z-40 backdrop-blur-lg border-b a-border" style="background:rgba(var(--a-surface-rgb),0.8)">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <img src="/logo.jpg" alt="Thay Cake" class="w-7 h-7 rounded-full object-cover">
+          <span class="font-semibold a-text">Admin</span>
+          <span class="text-xs a-muted a-rose px-2 py-0.5 rounded-full ml-1">Thay Cake</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="dm-toggle" class="dm-toggle" aria-label="Alternar modo escuro">
+            <svg class="dm-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="dm-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <a href="/" target="_blank" class="btn btn-ghost btn-sm text-xs">Ver Site</a>
+          <button onclick="logout()" class="btn btn-ghost btn-sm text-xs text-red-600 hover:bg-red-50">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <!-- Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8" id="stats-grid">
+        <div class="card p-4"><p class="text-xs a-muted uppercase tracking-wide">Produtos</p><p class="text-2xl font-bold mt-1" id="stat-products">0</p></div>
+        <div class="card p-4"><p class="text-xs a-muted uppercase tracking-wide">Avaliações</p><p class="text-2xl font-bold mt-1" id="stat-testimonials">0</p></div>
+        <div class="card p-4"><p class="text-xs a-muted uppercase tracking-wide">Média</p><p class="text-2xl font-bold mt-1" id="stat-rating">0.0</p></div>
+        <div class="card p-4"><p class="text-xs a-muted uppercase tracking-wide">Admin</p><p class="text-2xl font-bold mt-1">🧁</p></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-2 mb-6 a-rose p-1 rounded-xl w-fit">
+        <button class="tab-btn active" onclick="switchTab('products')" id="tab-products">Produtos</button>
+        <button class="tab-btn" onclick="switchTab('testimonials')" id="tab-testimonials">Avaliações</button>
+      </div>
+
+      <!-- Products Tab -->
+      <div id="tab-content-products" class="space-y-6">
+        <div class="flex items-center justify-between">
+          <p class="text-sm a-muted">Gerencie os sabores da vitrine</p>
+          <button onclick="openProductModal()" class="btn btn-primary btn-sm">+ Novo Produto</button>
+        </div>
+        <div id="products-table" class="card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b a-border a-bg">
+                  <th class="text-left p-3 font-medium a-label">Foto</th>
+                  <th class="text-left p-3 font-medium a-label">Nome</th>
+                  <th class="text-left p-3 font-medium a-label hidden sm:table-cell">Descrição</th>
+                  <th class="text-left p-3 font-medium a-label">Preço</th>
+                  <th class="text-right p-3 font-medium a-label">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="products-tbody"></tbody>
+            </table>
+          </div>
+          <div id="products-empty" class="hidden text-center py-10 text-sm a-muted">
+            <p class="text-2xl mb-2">🧁</p>
+            <p>Nenhum produto cadastrado.</p>
+            <button onclick="openProductModal()" class="a-primary font-medium mt-1 hover:underline">Adicionar primeiro produto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials Tab -->
+      <div id="tab-content-testimonials" class="hidden space-y-6">
+        <p class="text-sm a-muted">Gerencie as avaliações dos clientes</p>
+        <div class="card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b a-border a-bg">
+                  <th class="text-left p-3 font-medium a-label">Cliente</th>
+                  <th class="text-left p-3 font-medium a-label">Nota</th>
+                  <th class="text-left p-3 font-medium a-label hidden sm:table-cell">Comentário</th>
+                  <th class="text-left p-3 font-medium a-label hidden md:table-cell">Data</th>
+                  <th class="text-right p-3 font-medium a-label">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="testimonials-tbody"></tbody>
+            </table>
+          </div>
+          <div id="testimonials-empty" class="hidden text-center py-10 text-sm a-muted">
+            <p class="text-2xl mb-2">💬</p>
+            <p>Nenhuma avaliação recebida.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Modal -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-box">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-lg font-bold" id="product-modal-title">Novo Produto</h2>
+        <button onclick="closeProductModal()" class="a-muted" hover:a-text p-1">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <form id="product-form" class="space-y-4" enctype="multipart/form-data">
+        <input type="hidden" id="product-id">
+        <div>
+          <label class="block text-sm font-medium a-label mb-1">Nome do Produto *</label>
+          <input type="text" id="product-name" class="input-field" placeholder="Ex: Brigadeiro" required maxlength="60">
+        </div>
+        <div>
+          <label class="block text-sm font-medium a-label mb-1">Descrição <span class="a-muted-60">(opcional)</span></label>
+          <textarea id="product-desc" class="input-field resize-none" rows="3" placeholder="Descreva o sabor..." maxlength="200"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium a-label mb-1">Preço (R$) *</label>
+            <input type="number" id="product-price" class="input-field" placeholder="12,00" step="0.01" min="0" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium a-label mb-1">Categoria</label>
+            <select id="product-category" class="input-field">
+              <option value="tradicional">Tradicional</option>
+              <option value="frutas">Frutas</option>
+              <option value="premium">Premium</option>
+              <option value="especial">Especial</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium a-label mb-1">Foto do Produto</label>
+          <div id="upload-area" class="border-2 border-dashed b-b-50 rounded-xl p-4 text-center cursor-pointer hover:border-dashed hover:b-p transition-colors" onclick="document.getElementById('product-image').click()">
+            <input type="file" id="product-image" class="hidden" accept="image/png,image/jpeg,image/gif,image/webp">
+            <div id="upload-placeholder">
+              <svg class="mx-auto mb-1.5 a-muted" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p class="text-sm a-muted">Clique para selecionar uma foto</p>
+              <p class="text-xs a-muted-60 mt-0.5">PNG, JPG, GIF ou WebP · Máx 5MB</p>
+            </div>
+            <div id="upload-selected" class="hidden flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2 min-w-0">
+                <img id="image-preview" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border b-b-50">
+                <span id="file-name" class="text-sm a-text truncate"></span>
+              </div>
+              <button type="button" onclick="event.stopPropagation();document.getElementById('product-image').value='';document.getElementById('image-uploaded-url').value='';showUploadPlaceholder()" class="btn btn-ghost btn-sm text-xs flex-shrink-0">Remover</button>
+            </div>
+          </div>
+          <input type="hidden" id="image-uploaded-url">
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="submit" class="btn btn-primary flex-1 justify-center">Salvar</button>
+          <button type="button" onclick="closeProductModal()" class="btn btn-outline flex-1 justify-center">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Testimonial Edit Modal -->
+  <div class="modal-overlay" id="testimonial-modal">
+    <div class="modal-box">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-lg font-bold">Editar Avaliação</h2>
+        <button onclick="closeTestimonialModal()" class="a-muted" hover:a-text p-1">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <form id="testimonial-form" class="space-y-4">
+        <input type="hidden" id="testimonial-id">
+        <div>
+          <label class="block text-sm font-medium a-label mb-1">Nome</label>
+          <input type="text" id="testimonial-name" class="input-field" maxlength="60">
+        </div>
+        <div>
+          <label class="block text-sm font-medium a-label mb-1">Nota (1-5)</label>
+          <select id="testimonial-rating" class="input-field">
+            <option value="1">1 estrela</option>
+            <option value="2">2 estrelas</option>
+            <option value="3">3 estrelas</option>
+            <option value="4">4 estrelas</option>
+            <option value="5" selected>5 estrelas</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium a-label mb-1">Comentário</label>
+          <textarea id="testimonial-comment" class="input-field resize-none" rows="4" maxlength="500"></textarea>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="submit" class="btn btn-primary flex-1 justify-center">Salvar</button>
+          <button type="button" onclick="closeTestimonialModal()" class="btn btn-outline flex-1 justify-center">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div class="modal-overlay" id="delete-modal">
+    <div class="modal-box max-w-sm">
+      <div class="text-center">
+        <div class="text-3xl mb-3">⚠️</div>
+        <h2 class="text-lg font-bold mb-2">Confirmar exclusão</h2>
+        <p class="text-sm a-muted mb-6" id="delete-modal-msg">Tem certeza que deseja excluir?</p>
+        <div class="flex gap-3">
+          <button onclick="confirmDelete()" class="btn btn-danger flex-1 justify-center">Excluir</button>
+          <button onclick="closeDeleteModal()" class="btn btn-outline flex-1 justify-center">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';
+    let token = localStorage.getItem('thaycake_admin_token');
+    let deleteTarget = null;
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = `toast show ${type}`;
+      setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    function getToken() { return localStorage.getItem('thaycake_admin_token'); }
+
+    async function api(path, opts = {}) {
+      const headers = { 'Content-Type': 'application/json', ...opts.headers };
+      const t = getToken();
+      if (t) headers['Authorization'] = `Bearer ${t}`;
+      const res = await fetch(path, { ...opts, headers });
+      if (res.status === 401) { localStorage.removeItem('thaycake_admin_token'); showLogin(); return null; }
+      return res;
+    }
+
+    // Login
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pw = document.getElementById('password').value;
+      const err = document.getElementById('login-error');
+      err.classList.add('hidden');
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pw })
+        });
+        const data = await res.json();
+        if (!res.ok) { err.textContent = data.error || 'Senha incorreta'; err.classList.remove('hidden'); return; }
+        localStorage.setItem('thaycake_admin_token', data.token);
+        token = data.token;
+        showDashboard();
+      } catch { err.textContent = 'Erro de conexão'; err.classList.remove('hidden'); }
+    });
+
+    function showLogin() {
+      document.getElementById('login-screen').classList.remove('hidden');
+      document.getElementById('dashboard').classList.add('hidden');
+    }
+
+    function showDashboard() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      loadAll();
+    }
+
+    function logout() {
+      localStorage.removeItem('thaycake_admin_token');
+      token = null;
+      showLogin();
+    }
+
+    // Check auth on load
+    if (token) { showDashboard(); }
+
+    // Tab switching
+    let currentTab = 'products';
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('tab-content-products').classList.toggle('hidden', tab !== 'products');
+      document.getElementById('tab-content-testimonials').classList.toggle('hidden', tab !== 'testimonials');
+      if (tab === 'products') loadProducts();
+      else loadTestimonials();
+    }
+
+    // Load all
+    async function loadAll() {
+      loadStats();
+      loadProducts();
+      loadTestimonials();
+    }
+
+    // Stats
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const d = await res.json();
+        document.getElementById('stat-products').textContent = d.total_products || 0;
+        document.getElementById('stat-testimonials').textContent = d.total_testimonials || 0;
+        document.getElementById('stat-rating').textContent = d.average_rating || '0.0';
+      } catch {}
+    }
+
+    // Products
+    async function loadProducts() {
+      const tbody = document.getElementById('products-tbody');
+      const empty = document.getElementById('products-empty');
+      try {
+        const res = await fetch('/api/products');
+        const products = await res.json();
+        if (!products.length) { tbody.innerHTML = ''; empty.classList.remove('hidden'); return; }
+        empty.classList.add('hidden');
+        tbody.innerHTML = products.map(p => `
+          <tr class="border-b a-border hover:a-bg">
+            <td class="p-3">
+              ${p.image ? `<img src="${p.image}" alt="" class="w-10 h-10 rounded-lg object-cover">`
+                : `<span class="text-2xl">${p.emoji || '🧁'}</span>`}
+            </td>
+            <td class="p-3 font-medium">${p.name}</td>
+            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[200px] truncate">${p.description || '-'}</td>
+            <td class="p-3">R$ ${(p.price || 0).toFixed(2).replace('.', ',')}</td>
+            <td class="p-3 text-right">
+              <button onclick="editProduct(${p.id})" class="btn btn-ghost btn-sm">Editar</button>
+              <button onclick="promptDelete('product', ${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
+            </td>
+          </tr>
+        `).join('');
+      } catch {}
+    }
+
+    function openProductModal(data) {
+      document.getElementById('product-modal-title').textContent = data ? 'Editar Produto' : 'Novo Produto';
+      document.getElementById('product-id').value = data ? data.id : '';
+      document.getElementById('product-name').value = data ? data.name : '';
+      document.getElementById('product-desc').value = data ? (data.description || '') : '';
+      document.getElementById('product-price').value = data ? data.price : '';
+      document.getElementById('product-category').value = data ? (data.category || 'tradicional') : 'tradicional';
+      document.getElementById('product-image').value = '';
+      document.getElementById('image-uploaded-url').value = data && data.image ? data.image : '';
+      if (data && data.image) {
+        document.getElementById('image-preview').src = data.image;
+        document.getElementById('file-name').textContent = 'Foto atual';
+        document.getElementById('upload-placeholder').classList.add('hidden');
+        document.getElementById('upload-selected').classList.remove('hidden');
+      } else {
+        showUploadPlaceholder();
+      }
+      document.getElementById('product-modal').classList.add('open');
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.remove('open');
+      document.getElementById('product-form').reset();
+      showUploadPlaceholder();
+    }
+
+    function showUploadPlaceholder() {
+      document.getElementById('upload-placeholder').classList.remove('hidden');
+      document.getElementById('upload-selected').classList.add('hidden');
+    }
+
+    document.getElementById('product-image').addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('image-preview').src = e.target.result;
+          document.getElementById('file-name').textContent = file.name;
+          document.getElementById('upload-placeholder').classList.add('hidden');
+          document.getElementById('upload-selected').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function editProduct(id) {
+      fetch('/api/products').then(r => r.json()).then(products => {
+        const p = products.find(x => x.id === id);
+        if (p) openProductModal(p);
+      });
+    }
+
+    document.getElementById('product-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('product-id').value;
+      var imageUrl = document.getElementById('image-uploaded-url').value;
+      var fileInput = document.getElementById('product-image');
+      if (fileInput.files && fileInput.files[0]) {
+        var fd = new FormData();
+        fd.append('file', fileInput.files[0]);
+        var token = getToken();
+        var uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+          body: fd
+        });
+        if (!uploadRes.ok) { showToast('Erro ao fazer upload da foto', 'error'); return; }
+        var uploadData = await uploadRes.json();
+        imageUrl = uploadData.url;
+      }
+      var body = {
+        name: document.getElementById('product-name').value.trim(),
+        description: document.getElementById('product-desc').value.trim(),
+        price: parseFloat(document.getElementById('product-price').value),
+        category: document.getElementById('product-category').value,
+        image: imageUrl
+      };
+      if (!body.name || isNaN(body.price)) { showToast('Preencha nome e preço', 'error'); return; }
+      try {
+        const res = id
+          ? await api(`/api/admin/products/${id}`, { method: 'PUT', body: JSON.stringify(body) })
+          : await api('/api/admin/products', { method: 'POST', body: JSON.stringify(body) });
+        if (!res || !res.ok) { showToast('Erro ao salvar', 'error'); return; }
+        showToast(id ? 'Produto atualizado!' : 'Produto criado!');
+        closeProductModal();
+        loadProducts(); loadStats();
+      } catch { showToast('Erro ao salvar', 'error'); }
+    });
+
+    // Testimonials
+    async function loadTestimonials() {
+      const tbody = document.getElementById('testimonials-tbody');
+      const empty = document.getElementById('testimonials-empty');
+      try {
+        const res = await fetch('/api/testimonials');
+        const testimonials = await res.json();
+        if (!testimonials.length) { tbody.innerHTML = ''; empty.classList.remove('hidden'); return; }
+        empty.classList.add('hidden');
+        tbody.innerHTML = testimonials.map(t => `
+          <tr class="border-b a-border hover:a-bg">
+            <td class="p-3 font-medium">${t.name}</td>
+            <td class="p-3">${'★'.repeat(t.rating)}<span class="a-d4">${'★'.repeat(5 - t.rating)}</span></td>
+            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[250px] truncate">"${t.comment}"</td>
+            <td class="p-3 text-xs a-muted hidden md:table-cell">${new Date(t.date).toLocaleDateString('pt-BR')}</td>
+            <td class="p-3 text-right">
+              <button onclick="editTestimonial(${t.id})" class="btn btn-ghost btn-sm">Editar</button>
+              <button onclick="promptDelete('testimonial', ${t.id}, '${t.name.replace(/'/g, "\\'")}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
+            </td>
+          </tr>
+        `).join('');
+      } catch {}
+    }
+
+    function openTestimonialModal(data) {
+      document.getElementById('testimonial-id').value = data.id;
+      document.getElementById('testimonial-name').value = data.name;
+      document.getElementById('testimonial-rating').value = data.rating;
+      document.getElementById('testimonial-comment').value = data.comment;
+      document.getElementById('testimonial-modal').classList.add('open');
+    }
+
+    function closeTestimonialModal() {
+      document.getElementById('testimonial-modal').classList.remove('open');
+    }
+
+    function editTestimonial(id) {
+      fetch('/api/testimonials').then(r => r.json()).then(items => {
+        const t = items.find(x => x.id === id);
+        if (t) openTestimonialModal(t);
+      });
+    }
+
+    document.getElementById('testimonial-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('testimonial-id').value;
+      const body = {
+        name: document.getElementById('testimonial-name').value.trim(),
+        rating: parseInt(document.getElementById('testimonial-rating').value),
+        comment: document.getElementById('testimonial-comment').value.trim()
+      };
+      if (!body.name || !body.comment) { showToast('Preencha todos os campos', 'error'); return; }
+      try {
+        const res = await api(`/api/admin/testimonials/${id}`, { method: 'PUT', body: JSON.stringify(body) });
+        if (!res || !res.ok) { showToast('Erro ao salvar', 'error'); return; }
+        showToast('Avaliação atualizada!');
+        closeTestimonialModal();
+        loadTestimonials(); loadStats();
+      } catch { showToast('Erro ao salvar', 'error'); }
+    });
+
+    // Delete
+    function promptDelete(type, id, name) {
+      deleteTarget = { type, id };
+      document.getElementById('delete-modal-msg').textContent =
+        `Excluir "${name}"? Esta ação não pode ser desfeita.`;
+      document.getElementById('delete-modal').classList.add('open');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('delete-modal').classList.remove('open');
+      deleteTarget = null;
+    }
+
+    async function confirmDelete() {
+      if (!deleteTarget) return;
+      const { type, id } = deleteTarget;
+      const endpoint = type === 'product'
+        ? `/api/admin/products/${id}`
+        : `/api/admin/testimonials/${id}`;
+      try {
+        const res = await api(endpoint, { method: 'DELETE' });
+        if (!res || !res.ok) { showToast('Erro ao excluir', 'error'); return; }
+        showToast(`${type === 'product' ? 'Produto' : 'Avaliação'} excluído!`);
+        closeDeleteModal();
+        loadAll();
+      } catch { showToast('Erro ao excluir', 'error'); }
+    }
+
+    // Keyboard: close modals on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeProductModal(); closeTestimonialModal(); closeDeleteModal();
+      }
+    });
+
+    // Dark mode
+    (function() {
+      const html = document.documentElement;
+      const toggle = document.getElementById('dm-toggle');
+      const sun = toggle.querySelector('.dm-sun');
+      const moon = toggle.querySelector('.dm-moon');
+      function setTheme(dark) {
+        html.classList.toggle('dark', dark);
+        sun.style.display = dark ? 'none' : '';
+        moon.style.display = dark ? '' : 'none';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      }
+      const stored = localStorage.getItem('theme');
+      if (stored) {
+        setTheme(stored === 'dark');
+      } else {
+        setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      }
+      toggle.addEventListener('click', function() {
+        setTheme(!html.classList.contains('dark'));
+      });
+    })();
+  </script>
+</body>
+</html>

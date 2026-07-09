@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Bolo de prestígio",
+    "description": "",
+    "price": 10.0,
+    "emoji": "🧁",
+    "color1": "#BD6B62",
+    "color2": "#D4A69E",
+    "category": "tradicional",
+    "image": "/uploads/prod_f2d1f6f520dc4731.jpeg",
+    "whatsapp_link": "https://wa.me/5589988194690?text=Ol%C3%A1!%20Quero%20pedir%20o%20Bolo%20de%20prestígio"
+  }
+]
