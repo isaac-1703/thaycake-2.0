@@ -422,6 +422,7 @@
     const API = '';
     let token = localStorage.getItem('thaycake_admin_token');
     let deleteTarget = null;
+    let isSaving = false;
 
     function esc(s) {
       var d = document.createElement('div');
@@ -601,6 +602,11 @@
 
     document.getElementById('product-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (isSaving) return;
+      isSaving = true;
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Salvando...';
       const id = document.getElementById('product-id').value;
       var imageUrl = document.getElementById('image-uploaded-url').value;
       var fileInput = document.getElementById('product-image');
@@ -613,7 +619,7 @@
           headers: token ? { 'Authorization': 'Bearer ' + token } : {},
           body: fd
         });
-        if (!uploadRes.ok) { showToast('Erro ao fazer upload da foto', 'error'); return; }
+        if (!uploadRes.ok) { showToast('Erro ao fazer upload da foto', 'error'); isSaving = false; btn.disabled = false; btn.textContent = 'Salvar'; return; }
         var uploadData = await uploadRes.json();
         imageUrl = uploadData.url;
       }
@@ -624,7 +630,7 @@
         category: document.getElementById('product-category').value,
         image: imageUrl
       };
-      if (!body.name || isNaN(body.price)) { showToast('Preencha nome e preço', 'error'); return; }
+      if (!body.name || isNaN(body.price)) { showToast('Preencha nome e preço', 'error'); isSaving = false; btn.disabled = false; btn.textContent = 'Salvar'; return; }
       try {
         const res = id
           ? await api(`/api/admin/products/${id}`, { method: 'PUT', body: JSON.stringify(body) })
@@ -634,6 +640,11 @@
         closeProductModal();
         loadProducts(); loadStats();
       } catch { showToast('Erro ao salvar', 'error'); }
+      finally {
+        isSaving = false;
+        btn.disabled = false;
+        btn.textContent = 'Salvar';
+      }
     });
 
     // Testimonials
