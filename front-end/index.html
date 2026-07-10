@@ -723,13 +723,12 @@
 
         // Re-observe new elements
         document.querySelectorAll('#products-grid .fade-up').forEach(el => observer.observe(el));
-        // Trigger visibility for products already in view after 50ms
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           document.querySelectorAll('#products-grid .fade-up').forEach(el => {
             const rect = el.getBoundingClientRect();
             if (rect.top < window.innerHeight) el.classList.add('visible');
           });
-        }, 500);
+        });
       } catch (err) {
         document.getElementById('products-grid').innerHTML = `
           <div class="col-span-full text-center py-12">
@@ -756,7 +755,7 @@
         }
 
         grid.innerHTML = testimonials.map(t => `
-          <div class="bg-surface rounded-3xl p-6 border b-b-50 fade-up" role="listitem">
+          <div class="bg-surface rounded-3xl p-6 border b-b-50 fade-up visible" role="listitem">
             <div class="flex items-center gap-1 mb-3">
               ${'<svg width="16" height="16" viewBox="0 0 24 24" fill="#E8A84C" stroke="#E8A84C" stroke-width="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'.repeat(t.rating)}
             </div>
@@ -772,12 +771,6 @@
         `).join('');
 
         document.querySelectorAll('#testimonials-grid .fade-up').forEach(el => observer.observe(el));
-        setTimeout(() => {
-          document.querySelectorAll('#testimonials-grid .fade-up').forEach(el => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight) el.classList.add('visible');
-          });
-        }, 500);
       } catch (err) {
         document.getElementById('testimonials-grid').innerHTML = `
           <div class="col-span-full text-center py-12">
