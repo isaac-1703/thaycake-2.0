@@ -16,7 +16,8 @@
   </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { overflow-x: hidden; }
 
     :root {
       --tc-bg: #FCF9F7;
@@ -223,19 +224,20 @@
     }
     .toast {
       position: fixed;
-      bottom: 2rem;
-      right: 2rem;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
       z-index: 100;
-      padding: 1rem 1.5rem;
+      padding: 0.875rem 1.5rem;
       border-radius: 12px;
       color: #fff;
       font-weight: 500;
-      transform: translateY(100px);
+      white-space: nowrap;
       opacity: 0;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .toast.show {
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
     .toast.success { background: var(--tc-toast-success); }
@@ -333,7 +335,7 @@
         <img src="/logo.jpg" alt="Thay Cake" class="w-8 h-8 rounded-full object-cover">
         <span class="font-['Playfair_Display'] text-xl font-semibold t-t">Thay Cake</span>
       </a>
-      <div class="flex items-center gap-4 sm:gap-6">
+      <div class="flex items-center gap-2 sm:gap-6">
         <a href="/sabores" class="text-sm font-medium t-t2 hover:t-p transition-colors no-underline">Sabores</a>
         <a href="/feedbacks" class="text-sm font-medium t-t2 hover:t-p transition-colors no-underline">Feedbacks</a>
         <button id="dm-toggle" class="dm-toggle" aria-label="Alternar modo escuro">
@@ -369,17 +371,17 @@
           </div>
         </div>
         <div class="relative flex items-center justify-center lg:justify-end py-8">
-          <div class="relative">
-            <div class="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-2xl float-anim">
+          <div class="relative mx-4 sm:mx-0">
+            <div class="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-2xl float-anim">
               <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(to bottom right,rgb(var(--r2)),rgb(var(--via)),rgb(var(--d4)))">
-                <span class="text-8xl sm:text-9xl">🧁</span>
+                <span class="text-7xl sm:text-8xl lg:text-9xl">🧁</span>
               </div>
             </div>
-            <div class="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass rounded-2xl px-4 py-3 shadow-lg">
-              <p class="text-sm font-semibold t-t">+200 <span class="font-normal t-t2-70">pedidos</span></p>
+            <div class="absolute -bottom-3 -left-3 sm:-bottom-6 sm:-left-6 glass rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-lg whitespace-nowrap">
+              <p class="text-xs sm:text-sm font-semibold t-t">+200 <span class="font-normal t-t2-70">pedidos</span></p>
             </div>
-            <div class="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 glass rounded-2xl px-4 py-3 shadow-lg">
-              <p class="text-sm font-semibold t-p">★ 4.9</p>
+            <div class="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 glass rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-lg">
+              <p class="text-xs sm:text-sm font-semibold t-p">★ 4.9</p>
             </div>
           </div>
         </div>
@@ -390,33 +392,33 @@
   <!-- Trust bar -->
   <section class="border-y border-b/60 bg-surface-50" aria-label="Diferenciais">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         <div class="flex items-center gap-3">
-          <span class="text-2xl"></span>
-          <div>
-            <p class="text-sm font-semibold t-t">Ingredientes Selecionados</p>
-            <p class="text-xs t-t2-60">Qualidade em cada detalhe</p>
+          <span class="text-xl flex-shrink-0">🥄</span>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold t-t truncate">Ingredientes Selecionados</p>
+            <p class="text-xs t-t2-60 truncate">Qualidade em cada detalhe</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
-          <span class="text-2xl"></span>
-          <div>
-            <p class="text-sm font-semibold t-t">Feito Artesanalmente</p>
-            <p class="text-xs t-t2-60">Receita caseira especial</p>
+          <span class="text-xl flex-shrink-0">👩‍🍳</span>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold t-t truncate">Feito Artesanalmente</p>
+            <p class="text-xs t-t2-60 truncate">Receita caseira especial</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
-          <span class="text-2xl"></span>
-          <div>
-            <p class="text-sm font-semibold t-t">Entrega na sua casa</p>
-            <p class="text-xs t-t2-60">Consulte regiões</p>
+          <span class="text-xl flex-shrink-0">🚚</span>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold t-t truncate">Entrega na sua casa</p>
+            <p class="text-xs t-t2-60 truncate">Consulte regiões</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
-          <span class="text-2xl"></span>
-          <div>
-            <p class="text-sm font-semibold t-t">Amor em cada pote</p>
-            <p class="text-xs t-t2-60">Feito com carinho</p>
+          <span class="text-xl flex-shrink-0">❤️</span>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold t-t truncate">Amor em cada pote</p>
+            <p class="text-xs t-t2-60 truncate">Feito com carinho</p>
           </div>
         </div>
       </div>
@@ -694,13 +696,13 @@
 
         grid.innerHTML = products.map(p => `
             <div class="product-card bg-surface rounded-3xl overflow-hidden border b-b-50 fade-up flex flex-col" role="listitem">
-            <div class="h-48 flex items-center justify-center overflow-hidden flex-shrink-0 ${p.image ? '' : 'bg-gradient-to-br from-[' + p.color1 + '] to-[' + p.color2 + ']'}">
+            <div class="h-40 sm:h-48 flex items-center justify-center overflow-hidden flex-shrink-0 ${p.image ? '' : 'bg-gradient-to-br from-[' + p.color1 + '] to-[' + p.color2 + ']'}">
               ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" class="w-full h-full object-cover">` : `<span class="text-6xl">${p.emoji}</span>`}
             </div>
             <div class="p-6 flex flex-col flex-1">
-              <div class="flex items-start justify-between mb-2">
-                <h3 class="text-xl font-bold t-t">${esc(p.name)}</h3>
-                <span class="text-lg font-bold t-p whitespace-nowrap">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+              <div class="flex items-start justify-between mb-2 gap-2">
+                <h3 class="text-lg sm:text-xl font-bold t-t truncate min-w-0">${esc(p.name)}</h3>
+                <span class="text-base sm:text-lg font-bold t-p whitespace-nowrap flex-shrink-0">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
               </div>
               <p class="text-sm t-t2-70 leading-relaxed flex-1" style="overflow-wrap:break-word;word-break:break-word">${esc(p.description)}</p>
               <div class="text-center mt-auto">
@@ -752,12 +754,12 @@
               ${'<svg width="16" height="16" viewBox="0 0 24 24" fill="#E8A84C" stroke="#E8A84C" stroke-width="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'.repeat(t.rating)}
             </div>
             <p class="text-sm t-t leading-relaxed mb-4">${esc(t.comment)}</p>
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-r2 flex items-center justify-center text-sm font-medium t-p">
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-8 h-8 rounded-full bg-r2 flex items-center justify-center text-sm font-medium t-p flex-shrink-0">
                 ${esc(t.name.charAt(0).toUpperCase())}
               </div>
-              <span class="text-sm font-medium t-t2">${esc(t.name)}</span>
-              <span class="text-xs t-t2-40">${new Date(t.date).toLocaleDateString('pt-BR')}</span>
+              <span class="text-sm font-medium t-t2 truncate">${esc(t.name)}</span>
+              <span class="text-xs t-t2-40 flex-shrink-0">${new Date(t.date).toLocaleDateString('pt-BR')}</span>
             </div>
           </div>
         `).join('');
