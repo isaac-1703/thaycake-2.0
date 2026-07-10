@@ -288,6 +288,7 @@
                   <th class="text-left p-3 font-medium a-label">Cliente</th>
                   <th class="text-left p-3 font-medium a-label">Nota</th>
                   <th class="text-left p-3 font-medium a-label hidden sm:table-cell">Comentário</th>
+                  <th class="text-left p-3 font-medium a-label hidden md:table-cell">Status</th>
                   <th class="text-left p-3 font-medium a-label hidden md:table-cell">Data</th>
                   <th class="text-right p-3 font-medium a-label">Ações</th>
                 </tr>
@@ -640,23 +641,40 @@
       const tbody = document.getElementById('testimonials-tbody');
       const empty = document.getElementById('testimonials-empty');
       try {
-        const res = await fetch('/api/testimonials');
+        const res = await api('/api/admin/testimonials');
+        if (!res) return;
         const testimonials = await res.json();
         if (!testimonials.length) { tbody.innerHTML = ''; empty.classList.remove('hidden'); return; }
         empty.classList.add('hidden');
         tbody.innerHTML = testimonials.map(t => `
-          <tr class="border-b a-border hover:a-bg">
+          <tr class="border-b a-border hover:a-bg ${!t.approved ? 'a-rose' : ''}">
             <td class="p-3 font-medium">${esc(t.name)}</td>
             <td class="p-3">${'★'.repeat(t.rating)}<span class="a-d4">${'★'.repeat(5 - t.rating)}</span></td>
             <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[250px] truncate">"${esc(t.comment)}"</td>
+            <td class="p-3 text-xs hidden md:table-cell">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${t.approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+                ${t.approved ? '✓ Aprovada' : 'Pendente'}
+              </span>
+            </td>
             <td class="p-3 text-xs a-muted hidden md:table-cell">${new Date(t.date).toLocaleDateString('pt-BR')}</td>
             <td class="p-3 text-right">
+              <button onclick="toggleApprove(${t.id})" class="btn btn-ghost btn-sm ${t.approved ? 'text-yellow-600' : 'text-green-600'} hover:bg-green-50">${t.approved ? 'Rejeitar' : 'Aprovar'}</button>
               <button onclick="editTestimonial(${t.id})" class="btn btn-ghost btn-sm">Editar</button>
               <button onclick="promptDelete('testimonial', ${t.id}, '${escJs(t.name)}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
             </td>
           </tr>
         `).join('');
       } catch {}
+    }
+
+    async function toggleApprove(id) {
+      try {
+        const res = await api(`/api/admin/testimonials/${id}/approve`, { method: 'PATCH' });
+        if (!res || !res.ok) { showToast('Erro ao atualizar', 'error'); return; }
+        const data = await res.json();
+        showToast(data.approved ? 'Avaliação aprovada!' : 'Avaliação rejeitada');
+        loadTestimonials(); loadStats();
+      } catch { showToast('Erro ao atualizar', 'error'); }
     }
 
     function openTestimonialModal(data) {

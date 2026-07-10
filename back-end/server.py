@@ -662,6 +662,30 @@ def admin_update_testimonial(testimonial_id):
         return jsonify({"error": "Erro ao atualizar avaliação"}), 500
 
 
+@app.route('/api/admin/testimonials/<int:testimonial_id>/approve', methods=['PATCH'])
+@require_auth
+def admin_approve_testimonial(testimonial_id):
+    try:
+        existing = svc_get("testimonials", {"id": f"eq.{testimonial_id}"})
+        if not existing:
+            return jsonify({"error": "Avaliação não encontrada"}), 404
+        new_status = not existing[0].get("approved", False)
+        result = svc_update("testimonials", {"approved": new_status}, {"id": f"eq.{testimonial_id}"})
+        return jsonify({"approved": new_status})
+    except Exception:
+        return jsonify({"error": "Erro ao atualizar avaliação"}), 500
+
+
+@app.route('/api/admin/testimonials', methods=['GET'])
+@require_auth
+def admin_get_testimonials():
+    try:
+        testimonials = svc_get("testimonials", {"order": "approved.asc,date.desc"})
+        return jsonify(testimonials)
+    except Exception:
+        return jsonify({"error": "Erro ao carregar avaliações"}), 500
+
+
 @app.route('/api/admin/testimonials/<int:testimonial_id>', methods=['DELETE'])
 @require_auth
 def admin_delete_testimonial(testimonial_id):
