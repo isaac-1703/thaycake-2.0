@@ -254,12 +254,78 @@
     .float-anim {
       animation: float 4s ease-in-out infinite;
     }
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 90;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: var(--tc-surface);
+      border-radius: 24px;
+      width: 90%; max-width: 420px;
+      max-height: 90vh; overflow-y: auto;
+      padding: 1.75rem;
+      transform: scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-overlay.open .modal-box { transform: scale(1); }
+    .qty-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--tc-border);
+      background: var(--tc-surface);
+      color: var(--tc-text);
+      font-size: 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+      user-select: none;
+    }
+    .qty-btn:hover { border-color: var(--tc-primary); color: var(--tc-primary); }
+    .qty-btn:active { transform: scale(0.92); }
   </style>
 </head>
 <body>
 
   <!-- Toast -->
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- Quantity Modal -->
+  <div class="modal-overlay" id="qty-modal">
+    <div class="modal-box">
+      <div class="flex items-start gap-4 mb-4">
+        <img id="modal-img" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0 border b-b-50" src="" alt="">
+        <div class="flex-1 min-w-0">
+          <h3 id="modal-name" class="text-lg font-bold t-t truncate"></h3>
+          <p id="modal-desc" class="text-sm t-t2-70 mt-1 line-clamp-2"></p>
+          <p id="modal-price" class="text-base font-bold t-p mt-1"></p>
+        </div>
+        <button onclick="closeQtyModal()" class="flex-shrink-0 t-t2-40 hover:t-t transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="flex items-center justify-between py-4 border-t b-b-50">
+        <span class="text-sm font-medium t-t">Quantidade</span>
+        <div class="flex items-center gap-4">
+          <button class="qty-btn" onclick="changeQty(-1)" id="qty-minus">−</button>
+          <span id="qty-value" class="text-lg font-bold t-t min-w-[2ch] text-center">1</span>
+          <button class="qty-btn" onclick="changeQty(1)" id="qty-plus">+</button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-sm font-medium t-t2-70">Total</span>
+        <span id="modal-total" class="text-xl font-bold t-p"></span>
+      </div>
+      <button id="modal-whatsapp-btn" class="btn-primary w-full justify-center text-base !py-3" onclick="sendWhatsApp()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </button>
+    </div>
+  </div>
 
   <!-- Navbar -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass" role="navigation" aria-label="Navegação principal">
@@ -609,11 +675,14 @@
       }
     });
 
+    window._products = [];
+
     // Load products
     async function loadProducts() {
       try {
         const res = await fetch('/api/products');
         const products = await res.json();
+        window._products = products;
         const grid = document.getElementById('products-grid');
 
         if (!products.length) {
@@ -637,10 +706,10 @@
                 <span class="text-lg font-bold t-p whitespace-nowrap">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
               </div>
               <p class="text-sm t-t2-70 leading-relaxed flex-1" style="overflow-wrap:break-word;word-break:break-word">${esc(p.description)}</p>
-              <div class="text-center mt-4">
-                <a href="${esc(p.whatsapp_link || '#')}" target="_blank" rel="noopener noreferrer" class="btn-outline text-sm !py-2 !px-5">
+              <div class="text-center mt-auto">
+                <button onclick="openQtyModal(${p.id})" class="btn-outline text-sm !py-2 !px-5">
                   Comprar agora
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -736,6 +805,57 @@
         setTheme(!html.classList.contains('dark'));
       });
     })();
+
+    // Quantity modal
+    var _qtyProduct = null;
+    var _qty = 1;
+
+    function openQtyModal(id) {
+      var p = window._products.find(function(x) { return x.id === id; });
+      if (!p) return;
+      _qtyProduct = p;
+      _qty = 1;
+      document.getElementById('modal-img').src = p.image || '';
+      document.getElementById('modal-img').style.display = p.image ? '' : 'none';
+      document.getElementById('modal-name').textContent = p.name;
+      document.getElementById('modal-desc').textContent = p.description || '';
+      document.getElementById('modal-desc').style.display = p.description ? '' : 'none';
+      updateQtyModal();
+      document.getElementById('qty-modal').classList.add('open');
+    }
+
+    function closeQtyModal() {
+      document.getElementById('qty-modal').classList.remove('open');
+      _qtyProduct = null;
+    }
+
+    function changeQty(delta) {
+      _qty = Math.max(1, _qty + delta);
+      updateQtyModal();
+    }
+
+    function updateQtyModal() {
+      document.getElementById('qty-value').textContent = _qty;
+      var price = _qtyProduct ? _qtyProduct.price : 0;
+      var total = (price * _qty).toFixed(2).replace('.', ',');
+      document.getElementById('modal-price').textContent = 'R$ ' + price.toFixed(2).replace('.', ',');
+      document.getElementById('modal-total').textContent = 'R$ ' + total;
+    }
+
+    function sendWhatsApp() {
+      if (!_qtyProduct) return;
+      var name = _qtyProduct.name;
+      var price = _qtyProduct.price.toFixed(2).replace('.', ',');
+      var total = (_qtyProduct.price * _qty).toFixed(2).replace('.', ',');
+      var msg = 'Olá! Quero pedir ' + _qty + 'x ' + name + ' (R$ ' + price + ' cada) - Total: R$ ' + total;
+      window.open('https://wa.me/5589988194690?text=' + encodeURIComponent(msg), '_blank');
+      closeQtyModal();
+    }
+
+    // Close modal on overlay click
+    document.getElementById('qty-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeQtyModal();
+    });
 
     // Route-based scrolling
     (function() {
