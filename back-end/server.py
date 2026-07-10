@@ -409,7 +409,7 @@ def create_testimonial():
     comment = comment[:500]
 
     try:
-        result = sb_insert("testimonials", {
+        result = svc_insert("testimonials", {
             "name": name,
             "rating": rating,
             "comment": comment,
