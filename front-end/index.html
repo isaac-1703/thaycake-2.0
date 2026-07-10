@@ -521,6 +521,12 @@
       observer.observe(el);
     });
 
+    function esc(s) {
+      var d = document.createElement('div');
+      d.appendChild(document.createTextNode(s || ''));
+      return d.innerHTML;
+    }
+
     // Star rating
     const stars = document.querySelectorAll('.star-btn');
     const ratingInput = document.getElementById('rating');
@@ -624,16 +630,16 @@
         grid.innerHTML = products.map(p => `
           <div class="product-card bg-surface rounded-3xl overflow-hidden border b-b-50 fade-up" role="listitem">
             <div class="h-48 flex items-center justify-center overflow-hidden ${p.image ? '' : 'bg-gradient-to-br from-[' + p.color1 + '] to-[' + p.color2 + ']'}">
-              ${p.image ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">` : `<span class="text-6xl">${p.emoji}</span>`}
+              ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" class="w-full h-full object-cover">` : `<span class="text-6xl">${p.emoji}</span>`}
             </div>
             <div class="p-6">
               <div class="flex items-start justify-between mb-2">
-                <h3 class="text-xl font-bold t-t">${p.name}</h3>
+                <h3 class="text-xl font-bold t-t">${esc(p.name)}</h3>
                 <span class="text-lg font-bold t-p">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
               </div>
-              <p class="text-sm t-t2-70 leading-relaxed" style="overflow-wrap:break-word;word-break:break-word">${p.description}</p>
+              <p class="text-sm t-t2-70 leading-relaxed" style="overflow-wrap:break-word;word-break:break-word">${esc(p.description)}</p>
               <div class="text-center mt-4">
-                <a href="${p.whatsapp_link}" target="_blank" rel="noopener noreferrer" class="btn-outline text-sm !py-2 !px-5">
+                <a href="${esc(p.whatsapp_link || '#')}" target="_blank" rel="noopener noreferrer" class="btn-outline text-sm !py-2 !px-5">
                   Comprar agora
                 </a>
               </div>
@@ -680,12 +686,12 @@
             <div class="flex items-center gap-1 mb-3">
               ${'<svg width="16" height="16" viewBox="0 0 24 24" fill="#E8A84C" stroke="#E8A84C" stroke-width="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'.repeat(t.rating)}
             </div>
-            <p class="text-sm t-t leading-relaxed mb-4">"${t.comment}"</p>
+            <p class="text-sm t-t leading-relaxed mb-4">"${esc(t.comment)}"</p>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-full bg-r2 flex items-center justify-center text-sm font-medium t-p">
-                ${t.name.charAt(0).toUpperCase()}
+                ${esc(t.name.charAt(0).toUpperCase())}
               </div>
-              <span class="text-sm font-medium t-t2">${t.name}</span>
+              <span class="text-sm font-medium t-t2">${esc(t.name)}</span>
               <span class="text-xs t-t2-40">${new Date(t.date).toLocaleDateString('pt-BR')}</span>
             </div>
           </div>

@@ -422,6 +422,16 @@
     let token = localStorage.getItem('thaycake_admin_token');
     let deleteTarget = null;
 
+    function esc(s) {
+      var d = document.createElement('div');
+      d.appendChild(document.createTextNode(s || ''));
+      return d.innerHTML;
+    }
+
+    function escJs(s) {
+      return (s || '').replace(/['\\]/g, '\\$&');
+    }
+
     function showToast(msg, type = 'success') {
       const t = document.getElementById('toast');
       t.textContent = msg; t.className = `toast show ${type}`;
@@ -521,15 +531,15 @@
         tbody.innerHTML = products.map(p => `
           <tr class="border-b a-border hover:a-bg">
             <td class="p-3">
-              ${p.image ? `<img src="${p.image}" alt="" class="w-10 h-10 rounded-lg object-cover">`
-                : `<span class="text-2xl">${p.emoji || '🧁'}</span>`}
+              ${p.image ? `<img src="${esc(p.image)}" alt="" class="w-10 h-10 rounded-lg object-cover">`
+                : `<span class="text-2xl">${esc(p.emoji || '🧁')}</span>`}
             </td>
-            <td class="p-3 font-medium">${p.name}</td>
-            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[200px] truncate">${p.description || '-'}</td>
+            <td class="p-3 font-medium">${esc(p.name)}</td>
+            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[200px] truncate">${esc(p.description || '-')}</td>
             <td class="p-3">R$ ${(p.price || 0).toFixed(2).replace('.', ',')}</td>
             <td class="p-3 text-right">
               <button onclick="editProduct(${p.id})" class="btn btn-ghost btn-sm">Editar</button>
-              <button onclick="promptDelete('product', ${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
+              <button onclick="promptDelete('product', ${p.id}, '${escJs(p.name)}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
             </td>
           </tr>
         `).join('');
@@ -636,13 +646,13 @@
         empty.classList.add('hidden');
         tbody.innerHTML = testimonials.map(t => `
           <tr class="border-b a-border hover:a-bg">
-            <td class="p-3 font-medium">${t.name}</td>
+            <td class="p-3 font-medium">${esc(t.name)}</td>
             <td class="p-3">${'★'.repeat(t.rating)}<span class="a-d4">${'★'.repeat(5 - t.rating)}</span></td>
-            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[250px] truncate">"${t.comment}"</td>
+            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[250px] truncate">"${esc(t.comment)}"</td>
             <td class="p-3 text-xs a-muted hidden md:table-cell">${new Date(t.date).toLocaleDateString('pt-BR')}</td>
             <td class="p-3 text-right">
               <button onclick="editTestimonial(${t.id})" class="btn btn-ghost btn-sm">Editar</button>
-              <button onclick="promptDelete('testimonial', ${t.id}, '${t.name.replace(/'/g, "\\'")}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
+              <button onclick="promptDelete('testimonial', ${t.id}, '${escJs(t.name)}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
             </td>
           </tr>
         `).join('');
