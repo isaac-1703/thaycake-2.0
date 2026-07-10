@@ -650,7 +650,7 @@
           <tr class="border-b a-border hover:a-bg ${!t.approved ? 'a-rose' : ''}">
             <td class="p-3 font-medium">${esc(t.name)}</td>
             <td class="p-3">${'★'.repeat(t.rating)}<span class="a-d4">${'★'.repeat(5 - t.rating)}</span></td>
-            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[250px] truncate">"${esc(t.comment)}"</td>
+            <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[250px] truncate">${esc(t.comment)}</td>
             <td class="p-3 text-xs hidden md:table-cell">
               <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${t.approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
                 ${t.approved ? '✓ Visível' : 'Oculta'}
