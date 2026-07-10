@@ -627,16 +627,16 @@
         }
 
         grid.innerHTML = products.map(p => `
-          <div class="product-card bg-surface rounded-3xl overflow-hidden border b-b-50 fade-up" role="listitem">
-            <div class="h-48 flex items-center justify-center overflow-hidden ${p.image ? '' : 'bg-gradient-to-br from-[' + p.color1 + '] to-[' + p.color2 + ']'}">
+            <div class="product-card bg-surface rounded-3xl overflow-hidden border b-b-50 fade-up flex flex-col" role="listitem">
+            <div class="h-48 flex items-center justify-center overflow-hidden flex-shrink-0 ${p.image ? '' : 'bg-gradient-to-br from-[' + p.color1 + '] to-[' + p.color2 + ']'}">
               ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" class="w-full h-full object-cover">` : `<span class="text-6xl">${p.emoji}</span>`}
             </div>
-            <div class="p-6">
+            <div class="p-6 flex flex-col flex-1">
               <div class="flex items-start justify-between mb-2">
                 <h3 class="text-xl font-bold t-t">${esc(p.name)}</h3>
                 <span class="text-lg font-bold t-p whitespace-nowrap">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
               </div>
-              <p class="text-sm t-t2-70 leading-relaxed" style="overflow-wrap:break-word;word-break:break-word">${esc(p.description)}</p>
+              <p class="text-sm t-t2-70 leading-relaxed flex-1" style="overflow-wrap:break-word;word-break:break-word">${esc(p.description)}</p>
               <div class="text-center mt-4">
                 <a href="${esc(p.whatsapp_link || '#')}" target="_blank" rel="noopener noreferrer" class="btn-outline text-sm !py-2 !px-5">
                   Comprar agora
