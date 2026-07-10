@@ -1,0 +1,15 @@
+{
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/z_admin", "destination": "/front-end/admin.html" },
+    { "source": "/(.*\\.(js|css|jpg|jpeg|png|gif|webp|svg|ico|json))", "destination": "/front-end/$1" },
+    { "source": "/uploads/(.*)", "destination": "/front-end/uploads/$1" },
+    { "source": "/(.*)", "destination": "/front-end/$1" }
+  ]
+}
