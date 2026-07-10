@@ -134,14 +134,21 @@
       background: linear-gradient(135deg, var(--tc-hero-from) 0%, var(--tc-hero-mid) 50%, var(--tc-hero-to) 100%);
     }
     .hero-pattern {
-      background-image: radial-gradient(circle at 25% 75%, rgba(189, 107, 98, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 75% 25%, rgba(189, 107, 98, 0.06) 0%, transparent 50%);
+      background-image: radial-gradient(circle at 25% 75%, rgba(189, 107, 98, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 75% 25%, rgba(189, 107, 98, 0.04) 0%, transparent 50%);
     }
     .glass {
-      background: var(--tc-glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(255,255,255,0.85);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--tc-glass-border);
+    }
+    html.dark .glass {
+      background: rgba(26,20,18,0.9);
+    }
+    @supports not (backdrop-filter: blur(1px)) {
+      .glass { background: rgba(255,255,255,0.95); }
+      html.dark .glass { background: rgba(26,20,18,0.95); }
     }
     .product-card {
       background: var(--tc-surface);
@@ -579,7 +586,7 @@
           entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0, rootMargin: '50px' });
 
     document.querySelectorAll('.fade-up').forEach(el => {
       observer.observe(el);
@@ -722,7 +729,7 @@
             const rect = el.getBoundingClientRect();
             if (rect.top < window.innerHeight) el.classList.add('visible');
           });
-        }, 100);
+        }, 500);
       } catch (err) {
         document.getElementById('products-grid').innerHTML = `
           <div class="col-span-full text-center py-12">
@@ -770,7 +777,7 @@
             const rect = el.getBoundingClientRect();
             if (rect.top < window.innerHeight) el.classList.add('visible');
           });
-        }, 100);
+        }, 500);
       } catch (err) {
         document.getElementById('testimonials-grid').innerHTML = `
           <div class="col-span-full text-center py-12">
