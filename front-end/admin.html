@@ -653,12 +653,12 @@
             <td class="p-3 a-muted text-xs hidden sm:table-cell max-w-[250px] truncate">"${esc(t.comment)}"</td>
             <td class="p-3 text-xs hidden md:table-cell">
               <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${t.approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
-                ${t.approved ? '✓ Aprovada' : 'Pendente'}
+                ${t.approved ? '✓ Visível' : 'Oculta'}
               </span>
             </td>
             <td class="p-3 text-xs a-muted hidden md:table-cell">${new Date(t.date).toLocaleDateString('pt-BR')}</td>
             <td class="p-3 text-right">
-              <button onclick="toggleApprove(${t.id})" class="btn btn-ghost btn-sm ${t.approved ? 'text-yellow-600' : 'text-green-600'} hover:bg-green-50">${t.approved ? 'Rejeitar' : 'Aprovar'}</button>
+              <button onclick="toggleApprove(${t.id})" class="btn btn-ghost btn-sm ${t.approved ? 'text-yellow-600' : 'text-green-600'} hover:bg-green-50">${t.approved ? 'Ocultar' : 'Mostrar'}</button>
               <button onclick="editTestimonial(${t.id})" class="btn btn-ghost btn-sm">Editar</button>
               <button onclick="promptDelete('testimonial', ${t.id}, '${escJs(t.name)}')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Excluir</button>
             </td>
@@ -672,7 +672,7 @@
         const res = await api(`/api/admin/testimonials/${id}/approve`, { method: 'PATCH' });
         if (!res || !res.ok) { showToast('Erro ao atualizar', 'error'); return; }
         const data = await res.json();
-        showToast(data.approved ? 'Avaliação aprovada!' : 'Avaliação rejeitada');
+        showToast(data.approved ? 'Avaliação visível no site' : 'Avaliação ocultada');
         loadTestimonials(); loadStats();
       } catch { showToast('Erro ao atualizar', 'error'); }
     }

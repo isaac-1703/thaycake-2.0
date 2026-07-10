@@ -413,7 +413,7 @@ def create_testimonial():
             "name": name,
             "rating": rating,
             "comment": comment,
-            "approved": False,
+            "approved": True,
             "date": datetime.now(timezone.utc).isoformat()
         })
         return jsonify(result[0] if result else {"message": "Feedback enviado"}), 201
